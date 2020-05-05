@@ -2,7 +2,6 @@
 import coc
 import traceback
 import creds
-from database.database import BotDatabase
 
 from discord.ext import commands
 

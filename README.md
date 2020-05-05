@@ -1,5 +1,5 @@
-# Clash of Clans Sample Discord Bot [Python]
-Sample Discord bot, using Python, to access the Clash of Clans API
+# Clash of Clans Discord Bot [Python]
+Discord bot, using Python, to access the Clash of Clans API
 
 ## Getting Started
 1. Install the latest version of [Python](https://www.python.org/).
@@ -27,7 +27,3 @@ source venv_test/bin/activate
 ```
 You should now see your environment tag in the command line indicating that you are now in the virtual environment.
 ![venv](images/venv_image.png)
-## Project Developers
-TubaKid, Sidekick, mathsman, majordoobie...
-
-Find us and ask questions at https://discord.gg/Eaja7gJ
