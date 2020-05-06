@@ -11,7 +11,6 @@ description = "This is for my FWA clan"
 prefix = "!"
 
 # Here you make the connection to the COC API using the coc.py library
-
 coc_client = coc.login(creds.coc_dev_email, creds.coc_dev_password, client=coc.EventsClient, key_names="FWA")
 
 # These are the cogs that you are using in your bot
