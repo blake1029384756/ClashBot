@@ -40,8 +40,8 @@ class General(commands.Cog):
     @commands.command(name="whowins")
     async def who_wins(self, ctx):
         currentWar = await self.bot.coc.get_clan_war(ROYALS_TAG)
-        ourResults = []
-        enemyResults = []
+        ourWarLog = []
+        enemyWarLog = []
         ourLoseCnt = 0
         enemyLoseCnt = 0
         enemy_tag = ""
@@ -58,24 +58,37 @@ class General(commands.Cog):
                 tempWarLogUs = await self.bot.coc.get_warlog(ROYALS_TAG)
                 tempWarLogEnemy = await self.bot.coc.get_warlog(enemyTag)
 
+                parentTable = BeautifulTable()
+                warLogTableUs = BeautifulTable()
+                warLogTableEnemy = BeautifulTable()
+                parentTable.column_headers = ["Jesters Royals", currentWar.opponent.name]
+
+                # Us calculations
                 i = 0
                 while i < 7:
-                    ourResults.append(tempWarLogUs[i].result)
+                    ourWarLog.append(tempWarLogUs[i])
                     i += 1
 
-                for result in ourResults:
-                    if result == "lose":
+                for war in ourWarLog:
+                    warLogTableUs.append_row([war.result, war.opponent.name])
+                    if war.result == "lose":
                         ourLoseCnt += 1
 
+                # Enemy calculations
                 i = 0
                 while i < 7:
-                    enemyResults.append(tempWarLogEnemy[i].result)
+                    enemyWarLog.append(tempWarLogEnemy[i])
                     i += 1
 
-                for result in enemyResults:
-                    if result == "lose":
+                for war in enemyWarLog:
+                    warLogTableEnemy.append_row([war.result, war.opponent.name])
+                    if war.result == "lose":
                         enemyLoseCnt += 1
+                
+                parentTable.append_row([warLogTableUs, warLogTableEnemy])
+                await ctx.send(parentTable)
 
+                # Display winner base on lose count
                 if ourLoseCnt > enemyLoseCnt:
                     await ctx.send("Congrats an FWA Clan!! Royals is winning their war with {0}".format(currentWar.opponent.name))
                     return
