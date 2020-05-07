@@ -50,35 +50,44 @@ class General(commands.Cog):
             await ctx.send("Royals is not in war")
             return
         elif currentWar.state == "inWar" or currentWar.state == "preparation":
-            enemy_tag = currentWar.opponent.tag
+            enemyTag = currentWar.opponent.tag
+            enemyInfo = await self.bot.coc.get_clan(enemyTag)
+
+            if "FWA" in enemyInfo.description:
         
-            tempWarLogUs = await self.bot.coc.get_warlog(ROYALS_TAG)
-            tempWarLogEnemy = await self.bot.coc.get_warlog(enemy_tag)
+                tempWarLogUs = await self.bot.coc.get_warlog(ROYALS_TAG)
+                tempWarLogEnemy = await self.bot.coc.get_warlog(enemyTag)
 
-            i = 0
-            while i < 7:
-                ourResults.append(tempWarLogUs[i].result)
-                i += 1
+                i = 0
+                while i < 7:
+                    ourResults.append(tempWarLogUs[i].result)
+                    i += 1
 
-            for result in ourResults:
-                if result == "lose":
-                    ourLoseCnt += 1
+                for result in ourResults:
+                    if result == "lose":
+                        ourLoseCnt += 1
 
-            i = 0
-            while i < 7:
-                enemyResults.append(tempWarLogEnemy[i].result)
-                i += 1
+                i = 0
+                while i < 7:
+                    enemyResults.append(tempWarLogEnemy[i].result)
+                    i += 1
 
-            for result in enemyResults:
-                if result == "lose":
-                    enemyLoseCnt += 1
+                for result in enemyResults:
+                    if result == "lose":
+                        enemyLoseCnt += 1
 
-            if ourLoseCnt > enemyLoseCnt:
-                await ctx.send("Royals is winning their war with {0}".format(currentWar.opponent.name))
-            elif ourLoseCnt < enemyLoseCnt:
-                await ctx.send("Royals is losing their war with {0}".format(currentWar.opponent.name))
+                if ourLoseCnt > enemyLoseCnt:
+                    await ctx.send("Congrats an FWA Clan!! Royals is winning their war with {0}".format(currentWar.opponent.name))
+                    return
+                elif ourLoseCnt < enemyLoseCnt:
+                    await ctx.send("Congrats an FWA Clan!! Royals is losing their war with {0}".format(currentWar.opponent.name))
+                    return
+                else:
+                    await ctx.send("Congrats an FWA Clan!! Your lose counts are the same")
+                    return
             else:
-                await ctx.send("Your lose counts are the same")
+                await ctx.send("Sorry! Enemy Clan is not FWA")
+                return
         
 def setup(bot):
     bot.add_cog(General(bot))
